@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
+def env(setting):
+    try:
+        return os.environ[setting]
+    except KeyError:
+        error_msg = "Please set the '%s' env variable" % setting
+        raise ImproperlyConfigured(error_msg)
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -69,9 +77,13 @@ WSGI_APPLICATION = 'demoproject.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": env("DB_HOST"),
+        "PORT": env("DB_PORT"),
     }
 }
 

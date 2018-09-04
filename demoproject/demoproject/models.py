@@ -73,15 +73,23 @@ class City(models.Model):
 
 class BookStore(models.Model):
     name = models.CharField(max_length=50)
-    city = models.ForeignKey('City')
+    city = models.ForeignKey(
+	'City',
+        on_delete=models.CASCADE,
+    )
 
     def __unicode__(self):
         return '%s' % (self.name)
 
 
 class SalesHistory(models.Model):
-    bookstore = models.ForeignKey(BookStore)
-    book = models.ForeignKey(Book)
+    bookstore = models.ForeignKey(BookStore,
+        on_delete=models.CASCADE,
+    )
+    book = models.ForeignKey(Book,
+        on_delete=models.CASCADE,
+    )
+
     sale_date = models.DateField()
     sale_qty = models.IntegerField()
     price = models.DecimalField(max_digits=5, decimal_places=2)
